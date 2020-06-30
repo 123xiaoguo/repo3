@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="WARN">
+    <!-- <Properties>
+        <Property name="filename">f:/target/test.log</Property>
+      </Properties> -->
+    <Appenders>
+        <!-- 控制台输出日志信息 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 日志信息样式 -->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <!--   <File name="File" fileName="${filename}">
+            <PatternLayout>
+              <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+          </File> -->
+
+    </Appenders>
+
+    <!-- 配置日志 -->
+    <Loggers>
+
+        <!-- 启用日志的位置及级别   -->
+        <Logger name="com.jiazhong.dao" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <!--  <AppenderRef ref="File"/> -->
+        </Logger>
+
+        <Logger name="com.jiazhong.test" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <!--  <AppenderRef ref="File"/> -->
+        </Logger>
+
+        <!--
+         配置根日志
+         level="info":配置日志级别
+         日志级别(从底到高)
+         trace(跟踪级) debug(调试级) info(信息级) warn(警告级) error(错误级) Fatal(致命级)
+         根据配置的级别不同则显示的日志信息不同，显示的日志信息为您所配置的级别及以上的级别显示
+        -->
+        <Root level="trace">
+            <AppenderRef ref="Console"/>
+            <!--  <AppenderRef ref="File"/> -->
+        </Root>
+
+    </Loggers>

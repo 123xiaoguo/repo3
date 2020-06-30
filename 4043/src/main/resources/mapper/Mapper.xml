@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+ namespace的值必须为某个映射器接口的完整类型
+ -->
+<mapper namespace="com.jiazhong.dao.GoodsDao">
+    <select id="findGoodsByCondition" parameterType="com.jiazhong.model.GoodsView"
+            resultType="com.jiazhong.model.Goods">
+        <!-- 引用SQL片段 -->
+        <include refid="findGoods"/>
+        <where>
+            <if test="g_id != null and g_id != 0">
+                and g_id=#{g_id}
+            </if>
+            <if test="g_name != null and g_name != ''">
+                and g_name like concat("%",#{g_name},"%")
+            </if>
+            <if test="g_start_price != null">
+                and g_price &gt;= #{g_start_price}
+            </if>
+            <if test="g_end_price != null">
+                and g_price &lt;= #{g_end_price}
+            </if>
+
+            <if test="g_start_date != null">
+                and g_date &gt;= #{g_start_date}
+            </if>
+            <if test="g_end_date != null">
+                and g_date &lt;= #{g_end_date}
+            </if>
+        </where>
+
+    </select>
+
+
+    <update id="updateGoods" parameterType="com.jiazhong.model.Goods">
+        update tbl_goods
+        <set>
+            <if test="g_name!=null and g_name!=''">
+                g_name=#{g_name},
+            </if>
+            <if test="g_price!=null">
+                g_price=#{g_price},
+            </if>
+            <if test="g_date!=null">
+                g_date=#{g_date},
+            </if>
+
+        </set>
+    </update>
+
+
+
+    <!-- <delete id="deleteGoods">
+     <if test="g_ids!=null and g_ids.length!=0">
+      delete from tbl_goods
+      <where>
+
+        g_id in
+        <foreach collection="g_ids" item="g_id" open="(" close=")" separator=",">
+         #{g_id}
+        </foreach>
+
+      </where>
+     </if>
+
+    </delete> -->
+
+
+    <delete id="deleteGoods">
+        <if test="g_ids!=null and g_ids.length!=0">
+            delete from tbl_goods
+            <where>
+                <foreach collection="g_ids" item="g_id"  separator="or">
+                    g_id=#{g_id}
+                </foreach>
+            </where>
+        </if>
+    </delete>
+
+    <!-- 为了能够复用SQL语句，定义SQL片段 -->
+    <sql id="findGoods">select * from tbl_goods</sql>
+
+</mapper>
